@@ -7,7 +7,8 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SavingGoalResponseWrapper {
+public class SavingGoalResponseWrapper
+{
 
     @JsonProperty("savingsGoalUid")
     private String savingsGoalUid;

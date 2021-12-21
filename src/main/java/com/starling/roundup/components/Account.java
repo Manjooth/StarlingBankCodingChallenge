@@ -6,7 +6,8 @@ import lombok.Data;
 import java.time.OffsetDateTime;
 
 @Data
-public class Account {
+public class Account
+{
 
     @JsonProperty("accountUid")
     private String accountId;

@@ -9,7 +9,8 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SavingGoalWrapper {
+public class SavingGoalWrapper
+{
 
     @JsonProperty("savingsGoalList")
     private List<SavingGoal> savingsGoalList;

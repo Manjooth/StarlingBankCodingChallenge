@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class Transaction {
+public class Transaction
+{
 
     @JsonProperty("categoryUid")
     private String categoryUid;

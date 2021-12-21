@@ -8,12 +8,14 @@ import org.springframework.http.MediaType;
 import java.util.List;
 
 @Configuration
-public class HeadersConfiguration {
+public class HeadersConfiguration
+{
 
     @Value("${bearer.token}")
     private String bearerToken;
 
-    public HttpHeaders getHeaders() {
+    public HttpHeaders getHeaders()
+    {
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));

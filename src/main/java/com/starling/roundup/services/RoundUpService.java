@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class RoundUpService {
+public class RoundUpService
+{
 
     @Autowired
     private TransactionService transactionService;
@@ -37,25 +38,31 @@ public class RoundUpService {
     private HeadersConfiguration headersConfiguration;
 
 
-    public List<SavingGoal> roundUp(){
+    public List<SavingGoal> roundUp()
+    {
         String savingsGoalUID = "";
         final String accountId = this.getAccountUid();
         final List<Transaction> transactionsList = this.transactionService.getTransactions(accountId);
         final BigDecimal roundedAmount = this.roundUp.roundUpTransactionAmount(transactionsList);
         final  List<SavingGoal> savingGoalsList = this.savingGoalService.getSavingGoalsList(accountId);
-        if(savingGoalsList.isEmpty()){
+
+        if(savingGoalsList.isEmpty())
+        {
             savingsGoalUID = this.savingGoalService.createNewSavingsGoal(accountId);
         }
-        for (SavingGoal savingGoal : savingGoalsList) {
+
+        for (SavingGoal savingGoal : savingGoalsList)
+        {
             savingsGoalUID = savingGoal.getSavingsGoalUid();
         }
-        System.out.println("saving goals id: " + savingsGoalUID);
+
         this.savingGoalService.updateSavingsGoal(accountId, savingsGoalUID, roundedAmount);
 
         return this.savingGoalService.getSavingGoalsList(accountId);
     }
 
-    public String getAccountUid() {
+    public String getAccountUid()
+    {
         final HttpEntity<AccountWrapper> request = this.getAccountInfoCustomHeaders();
         final AccountWrapper wrapper = this.restTemplate
                 .exchange(APIUrls.ACCOUNT_INFO_URL,
@@ -67,7 +74,8 @@ public class RoundUpService {
         return Objects.requireNonNull(wrapper).getAccounts().get(0).getAccountId();
     }
 
-    private HttpEntity<AccountWrapper> getAccountInfoCustomHeaders() {
+    private HttpEntity<AccountWrapper> getAccountInfoCustomHeaders()
+    {
         final HttpHeaders httpHeaders = this.headersConfiguration.getHeaders();
         return new HttpEntity<>(httpHeaders);
     }

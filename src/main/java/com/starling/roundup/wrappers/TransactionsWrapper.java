@@ -10,7 +10,8 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TransactionsWrapper implements Serializable {
+public class TransactionsWrapper implements Serializable
+{
 
     @JsonProperty("feedItems")
     private List<Transaction> transactions;

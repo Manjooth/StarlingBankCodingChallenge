@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class CreateSavingGoal {
+public class CreateSavingGoal
+{
 
     @JsonProperty("savingsGoalUid")
     private String savingsGoalUid;

@@ -14,19 +14,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/starling")
-public class RoundUpController {
-
-    @Autowired
-    private TransactionService transactionService;
+public class RoundUpController
+{
 
     @Autowired
     private RoundUpService roundUpService;
 
-    @Autowired
-    private SavingGoalService savingGoalService;
-
     @GetMapping(value = "/round-up")
-    public ResponseEntity roundUp() {
+    public ResponseEntity roundUp()
+    {
         final List<SavingGoal> response = roundUpService.roundUp();
         return ResponseEntity.ok(response);
     }

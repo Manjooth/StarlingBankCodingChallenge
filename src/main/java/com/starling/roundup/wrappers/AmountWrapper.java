@@ -4,6 +4,7 @@ import com.starling.roundup.components.Amount;
 import lombok.Data;
 
 @Data
-public class AmountWrapper {
+public class AmountWrapper
+{
     private Amount amount;
 }

@@ -10,14 +10,16 @@ import java.util.Random;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateSavingsGoalRequest {
+public class CreateSavingsGoalRequest
+{
 
     private String name;
     private String currency;
     private Amount target;
     private String base64EncodedPhoto;
 
-    public static CreateSavingsGoalRequest withDefaultValues() {
+    public static CreateSavingsGoalRequest withDefaultValues()
+    {
 
         final String name = "My savings goal " + new Random().nextInt(10000000);;
         final String currency = "GBP";

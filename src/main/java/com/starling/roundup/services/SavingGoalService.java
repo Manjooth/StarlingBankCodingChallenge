@@ -20,7 +20,8 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Service
-public class SavingGoalService {
+public class SavingGoalService
+{
 
     @Autowired
     private RestTemplate restTemplate;
@@ -28,7 +29,8 @@ public class SavingGoalService {
     @Autowired
     private HeadersConfiguration headersConfiguration;
 
-    public List<SavingGoal> getSavingGoalsList(final String accountId){
+    public List<SavingGoal> getSavingGoalsList(final String accountId)
+    {
         final HttpEntity<SavingGoalWrapper> request = this.getHeaders();
         final Map<String, String> params = new HashMap<>();
         params.put("accountUid", accountId);
@@ -38,14 +40,16 @@ public class SavingGoalService {
                 request,
                 SavingGoalWrapper.class, params);
 
-        if(response.getBody() == null){
+        if(response.getBody() == null)
+        {
             return Collections.emptyList();
         }
 
         return response.getBody().getSavingsGoalList();
     }
 
-    public String createNewSavingsGoal(final String accountId) {
+    public String createNewSavingsGoal(final String accountId)
+    {
         final HttpEntity<CreateSavingsGoalRequest> request = this.putHeaders();
 
         final Map<String, String> params = new HashMap<>();
@@ -59,7 +63,8 @@ public class SavingGoalService {
         return response.getBody().getSavingsGoalUid();
     }
 
-    public void updateSavingsGoal(final String accountId, final String savingsGoalUID, final BigDecimal roundedAmount) {
+    public void updateSavingsGoal(final String accountId, final String savingsGoalUID, final BigDecimal roundedAmount)
+    {
         final Map<String, String> params = new HashMap<>();
         final String transferUID = UUID.randomUUID().toString();
 
@@ -71,24 +76,29 @@ public class SavingGoalService {
         this.restTemplate.exchange(APIUrls.SAVINGS_GOALS_ADD_MONEY_URL, HttpMethod.PUT, request, String.class, params);
     }
 
-    private HttpEntity<SavingGoalWrapper> getHeaders() {
+    private HttpEntity<SavingGoalWrapper> getHeaders()
+    {
         final HttpHeaders httpHeaders = this.headersConfiguration.getHeaders();
         return new HttpEntity<>(httpHeaders);
     }
 
-    private HttpEntity<CreateSavingsGoalRequest> putHeaders() {
+    private HttpEntity<CreateSavingsGoalRequest> putHeaders()
+    {
         final HttpHeaders httpHeaders = this.headersConfiguration.getHeaders();
         return new HttpEntity<>(CreateSavingsGoalRequest.withDefaultValues(), httpHeaders);
     }
 
-    private HttpEntity<AmountWrapper> putAmountCustomHeaders(final BigDecimal roundedAmount) {
+    private HttpEntity<AmountWrapper> putAmountCustomHeaders(final BigDecimal roundedAmount)
+    {
         final HttpHeaders httpHeaders = this.headersConfiguration.getHeaders();
 
         final AmountWrapper amount = new AmountWrapper();
         final Amount newAmount = new Amount();
+
         newAmount.setMinorUnits(roundedAmount.movePointRight(2));
         newAmount.setCurrency("GBP");
         amount.setAmount(newAmount);
+
         return new HttpEntity<>(amount, httpHeaders);
     }
 }

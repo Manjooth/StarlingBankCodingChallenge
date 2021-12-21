@@ -19,7 +19,8 @@ import java.time.ZoneId;
 import java.util.*;
 
 @Service
-public class TransactionService {
+public class TransactionService
+{
 
     @Autowired
     private RestTemplate restTemplate;
@@ -27,7 +28,8 @@ public class TransactionService {
     @Autowired
     private HeadersConfiguration headersConfiguration;
 
-    public List<Transaction> getTransactions(final String accountId) {
+    public List<Transaction> getTransactions(final String accountId)
+    {
         final Map<String, String> params = new HashMap<>();
 
         final Date currentDate = new Date();
@@ -54,14 +56,16 @@ public class TransactionService {
                 request,
                 TransactionsWrapper.class, params);
 
-        if(response.getBody() == null){
+        if(response.getBody() == null)
+        {
             return Collections.emptyList();
         }
 
         return response.getBody().getTransactions();
     }
 
-    private HttpEntity<TransactionsWrapper> getHeaders() {
+    private HttpEntity<TransactionsWrapper> getHeaders()
+    {
         final HttpHeaders httpHeaders = this.headersConfiguration.getHeaders();
         return new HttpEntity<>(httpHeaders);
     }

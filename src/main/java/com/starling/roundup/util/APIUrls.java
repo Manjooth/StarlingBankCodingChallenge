@@ -1,7 +1,7 @@
 package com.starling.roundup.util;
 
-public class APIUrls {
-
+public class APIUrls
+{
     public static final String BASE_URL = "https://api-sandbox.starlingbank.com/api/v2";
 
     // accounts

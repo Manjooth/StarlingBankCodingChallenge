@@ -9,7 +9,8 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AccountWrapper {
+public class AccountWrapper
+{
 
     @JsonProperty("accounts")
     private List<Account> accounts;

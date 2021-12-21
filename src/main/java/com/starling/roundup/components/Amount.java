@@ -10,7 +10,8 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Amount {
+public class Amount
+{
 
     @JsonProperty("currency")
     private String currency;
