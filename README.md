@@ -27,3 +27,9 @@ long as you are prepared to explain what you’ve done and why:
 
 - Java: Main method which runs the round up directly, or main method which starts an
 embedded web server with a REST resource we can invoke to trigger the round-up.
+
+### Thinking/Planning
+
+
+### Result
+![Screenshot from 2021-12-21 12-56-12](https://user-images.githubusercontent.com/21277038/146933743-5a37aef1-0dca-4eff-bac0-20cc72176f9f.png)
