@@ -30,18 +30,18 @@ public class TransactionService {
     public List<Transaction> getTransactions(final String accountId) {
         final Map<String, String> params = new HashMap<>();
 
-        Date currentDate = new Date();
+        final Date currentDate = new Date();
 
-        LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().minusDays(7);
-        Date currentMinusSevenDays = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        final LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().minusDays(7);
+        final Date currentMinusSevenDays = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
-        Timestamp currentDateTimeStamp =new Timestamp(currentDate.getTime());
-        Timestamp weekAgoTimeStamp =new Timestamp(currentMinusSevenDays.getTime());
+        final Timestamp currentDateTimeStamp =new Timestamp(currentDate.getTime());
+        final Timestamp weekAgoTimeStamp =new Timestamp(currentMinusSevenDays.getTime());
 
-        SimpleDateFormat today = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        final SimpleDateFormat today = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-        String todayDate = today.format(currentDateTimeStamp);
-        String weekAgoDate = today.format(weekAgoTimeStamp);
+        final String todayDate = today.format(currentDateTimeStamp);
+        final String weekAgoDate = today.format(weekAgoTimeStamp);
 
         params.put("accountUid", accountId);
         params.put("minTransactionTimestamp", weekAgoDate);

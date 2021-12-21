@@ -27,7 +27,7 @@ public class RoundUpController {
 
     @GetMapping(value = "/round-up")
     public ResponseEntity roundUp() {
-        List<SavingGoal> response = roundUpService.roundUp();
+        final List<SavingGoal> response = roundUpService.roundUp();
         return ResponseEntity.ok(response);
     }
 

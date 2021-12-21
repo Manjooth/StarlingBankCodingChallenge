@@ -6,7 +6,6 @@ import com.starling.roundup.config.HeadersConfiguration;
 import com.starling.roundup.util.APIUrls;
 import com.starling.roundup.util.RoundUp;
 import com.starling.roundup.wrappers.AccountWrapper;
-import com.starling.roundup.wrappers.SavingGoalResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;

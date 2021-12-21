@@ -10,10 +10,10 @@ import java.util.List;
 @Service
 public class RoundUp {
 
-    public BigDecimal roundUpTransactionAmount(List<Transaction> transactions){
+    public BigDecimal roundUpTransactionAmount(final List<Transaction> transactions){
         BigDecimal rounding = BigDecimal.ZERO;
         for(Transaction transaction : transactions){
-            BigDecimal amount = transaction.getBalance().getMinorUnits();
+            final BigDecimal amount = transaction.getBalance().getMinorUnits();
 
             if(!amount.equals(BigDecimal.ZERO) && transaction.getDirection().equals("OUT")){
                 rounding = rounding.add(this.round(transaction));
@@ -23,16 +23,16 @@ public class RoundUp {
         return rounding;
     }
 
-    private BigDecimal round(Transaction transaction) {
-        BigDecimal amount = transaction.getBalance().getMinorUnits();
-        BigDecimal oneHundred = new BigDecimal(100);
-        BigDecimal decimalAmount = amount.divide(oneHundred, 2, RoundingMode.UNNECESSARY);
+    private BigDecimal round(final Transaction transaction) {
+        final BigDecimal amount = transaction.getBalance().getMinorUnits();
+        final BigDecimal oneHundred = new BigDecimal(100);
+        final BigDecimal decimalAmount = amount.divide(oneHundred, 2, RoundingMode.UNNECESSARY);
 
         if(decimalAmount.equals(BigDecimal.ZERO)){
             return BigDecimal.ZERO;
         }
 
-        BigDecimal fractionalPart = decimalAmount.remainder(BigDecimal.ONE);
+        final BigDecimal fractionalPart = decimalAmount.remainder(BigDecimal.ONE);
 
         System.out.println("minor units: " + transaction.getBalance().getMinorUnits() + " and divided: " + decimalAmount + " and fractional: " + fractionalPart + " roundup is: " + BigDecimal.ONE.subtract(fractionalPart));
 

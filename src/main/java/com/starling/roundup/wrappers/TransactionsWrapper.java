@@ -14,4 +14,5 @@ public class TransactionsWrapper implements Serializable {
 
     @JsonProperty("feedItems")
     private List<Transaction> transactions;
+
 }
