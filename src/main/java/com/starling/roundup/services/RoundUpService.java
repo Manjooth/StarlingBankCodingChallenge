@@ -22,20 +22,11 @@ import java.util.Objects;
 public class RoundUpService
 {
 
-    @Autowired
-    private TransactionService transactionService;
-
-    @Autowired
-    private RoundUp roundUp;
-
-    @Autowired
-    private SavingGoalService savingGoalService;
-
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private HeadersConfiguration headersConfiguration;
+    @Autowired private TransactionService transactionService;
+    @Autowired private RoundUp roundUp;
+    @Autowired private SavingGoalService savingGoalService;
+    @Autowired private RestTemplate restTemplate;
+    @Autowired private HeadersConfiguration headersConfiguration;
 
 
     public List<SavingGoal> roundUp()
@@ -44,7 +35,7 @@ public class RoundUpService
         final String accountId = this.getAccountUid();
         final List<Transaction> transactionsList = this.transactionService.getTransactions(accountId);
         final BigDecimal roundedAmount = this.roundUp.roundUpTransactionAmount(transactionsList);
-        final  List<SavingGoal> savingGoalsList = this.savingGoalService.getSavingGoalsList(accountId);
+        final List<SavingGoal> savingGoalsList = this.savingGoalService.getSavingGoalsList(accountId);
 
         if(savingGoalsList.isEmpty())
         {

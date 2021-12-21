@@ -22,11 +22,8 @@ import java.util.*;
 public class TransactionService
 {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private HeadersConfiguration headersConfiguration;
+    @Autowired private RestTemplate restTemplate;
+    @Autowired private HeadersConfiguration headersConfiguration;
 
     public List<Transaction> getTransactions(final String accountId)
     {

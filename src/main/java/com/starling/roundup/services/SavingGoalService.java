@@ -23,11 +23,8 @@ import java.util.*;
 public class SavingGoalService
 {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private HeadersConfiguration headersConfiguration;
+    @Autowired private RestTemplate restTemplate;
+    @Autowired private HeadersConfiguration headersConfiguration;
 
     public List<SavingGoal> getSavingGoalsList(final String accountId)
     {
