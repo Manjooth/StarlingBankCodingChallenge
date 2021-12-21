@@ -10,7 +10,6 @@ import com.starling.roundup.util.RoundUp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
@@ -33,35 +32,34 @@ class RoundUpControllerTest
     private final Amount testAmount3 = new Amount("GBP", new BigDecimal("1971")); // 29p saved
     private final List<Transaction> mockTransactionList = new ArrayList<>();
 
-    @Autowired RoundUpService roundUpService;
+    @Mock RoundUpService roundUpService;
     @Mock private TransactionService transactionService;
     @Mock private RoundUp roundUp;
     @Mock SavingGoalService savingGoalService;
 
     @BeforeEach
     void setUp() {
+        when(roundUpService.getAccountUid()).thenReturn(ACCOUNT_ID);
         when(transactionService.getTransactions(ACCOUNT_ID)).thenReturn(mockTransactionList);
         when(roundUp.roundUpTransactionAmount(Collections.emptyList())).thenReturn(new BigDecimal(0));
         when(savingGoalService.getSavingGoalsList(ACCOUNT_ID)).thenReturn(Collections.emptyList());
         when(savingGoalService.createNewSavingsGoal(ACCOUNT_ID)).thenReturn(SAVINGS_GOAL_ID);
+        when(roundUpService.roundUp()).thenReturn(Collections.emptyList());
     }
 
     @Test
     void shouldThrowErrorWhenAccountIdCallingAccountEndpointFails()
     {
-        //TODO
+        when(roundUpService.roundUp()).thenCallRealMethod();
+        assertThrows(Exception.class, () -> {
+            roundUpService.roundUp();
+        });
     }
 
     @Test
     void shouldReturnAccountIdWhenCallingAccountsEndpoint()
     {
         assertEquals(ACCOUNT_ID, roundUpService.getAccountUid());
-    }
-
-    @Test
-    void shouldThrowErrorWhenCallingTransactionEndpointFails()
-    {
-        //TODO
     }
 
     @Test
@@ -122,7 +120,13 @@ class RoundUpControllerTest
 
         when(savingGoalService.getSavingGoalsList(ACCOUNT_ID)).thenReturn(savingGoalListToReturn);
 
-
         assertEquals(1, savingGoalService.getSavingGoalsList(ACCOUNT_ID).size());
     }
+
+    @Test
+    void shouldReturnSavingsGoalListFromRoundUpServiceRoundUp()
+    {
+        assertEquals(Collections.emptyList(), roundUpService.roundUp());
+    }
+
 }

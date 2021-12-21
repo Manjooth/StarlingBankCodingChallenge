@@ -31,25 +31,26 @@ public class RoundUpService
 
     public List<SavingGoal> roundUp()
     {
-        String savingsGoalUID = "";
-        final String accountId = this.getAccountUid();
-        final List<Transaction> transactionsList = this.transactionService.getTransactions(accountId);
-        final BigDecimal roundedAmount = this.roundUp.roundUpTransactionAmount(transactionsList);
-        final List<SavingGoal> savingGoalsList = this.savingGoalService.getSavingGoalsList(accountId);
+        try{
+            String savingsGoalUID = "";
+            final String accountId = this.getAccountUid();
+            final List<Transaction> transactionsList = this.transactionService.getTransactions(accountId);
+            final BigDecimal roundedAmount = this.roundUp.roundUpTransactionAmount(transactionsList);
+            final List<SavingGoal> savingGoalsList = this.savingGoalService.getSavingGoalsList(accountId);
 
-        if(savingGoalsList.isEmpty())
-        {
-            savingsGoalUID = this.savingGoalService.createNewSavingsGoal(accountId);
+            if(savingGoalsList.isEmpty())
+            {
+                savingsGoalUID = this.savingGoalService.createNewSavingsGoal(accountId);
+            }
+
+            savingsGoalUID = savingGoalsList.get(0).getSavingsGoalUid(); // get first item in the list
+
+            this.savingGoalService.updateSavingsGoal(accountId, savingsGoalUID, roundedAmount);
+
+            return this.savingGoalService.getSavingGoalsList(accountId);
+        }catch(Exception exception){
+            throw new RuntimeException("Error with fetching data");
         }
-
-        for (SavingGoal savingGoal : savingGoalsList)
-        {
-            savingsGoalUID = savingGoal.getSavingsGoalUid();
-        }
-
-        this.savingGoalService.updateSavingsGoal(accountId, savingsGoalUID, roundedAmount);
-
-        return this.savingGoalService.getSavingGoalsList(accountId);
     }
 
     public String getAccountUid()
