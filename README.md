@@ -1,4 +1,4 @@
-###The Challenge
+### The Challenge
 We’d like you to develop a “round-up” feature for Starling customers using our public
 developer API that is available to all customers and partners.
 
@@ -7,7 +7,7 @@ pound. For example with spending of £4.35, £5.20 and £0.87, the round-up woul
 This amount should then be transferred into a savings goal, helping the customer save for
 future adventures.
 
-###API calls
+### API calls
 To make this work, the key parts from our public API you will need are:
 1. Accounts - To retrieve accounts for the customer
 2. Transaction feed - To retrieve transactions for the customer
@@ -16,7 +16,7 @@ To make this work, the key parts from our public API you will need are:
 We do expect to see your working here: please do not use any of the libraries out there
 which provide an sdk for interacting with our api.
    
-###What to build
+### What to build
 Pick your favourite platform to develop for. If you have experience with multiple languages
 that’s fantastic - you only need to submit for one and your choice won’t impact potential
 roles with us - we have plenty of engineers who work across platforms / learn news ones
