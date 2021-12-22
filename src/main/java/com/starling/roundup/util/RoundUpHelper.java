@@ -8,7 +8,7 @@ import java.math.RoundingMode;
 import java.util.List;
 
 @Service
-public class RoundUp
+public class RoundUpHelper
 {
 
     public BigDecimal roundUpTransactionAmount(final List<Transaction> transactions)

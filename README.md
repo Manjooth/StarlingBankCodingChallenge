@@ -1,3 +1,8 @@
+### Running
+- In Starling Bank Developers Account, refresh or generate a new access token. Please replace
+`bearer.token` property in `application.properties`
+- Run the project and do a GET call to `localhost:8080/starling/round-up` in Postman
+
 ### The Challenge
 We’d like you to develop a “round-up” feature for Starling customers using our public
 developer API that is available to all customers and partners.

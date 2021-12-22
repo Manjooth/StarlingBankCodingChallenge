@@ -6,8 +6,7 @@ import com.starling.roundup.components.Transaction;
 import com.starling.roundup.services.RoundUpService;
 import com.starling.roundup.services.SavingGoalService;
 import com.starling.roundup.services.TransactionService;
-import com.starling.roundup.util.RoundUp;
-import org.junit.jupiter.api.BeforeEach;
+import com.starling.roundup.util.RoundUpHelper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,63 +31,57 @@ class RoundUpControllerTest
     private final Amount testAmount3 = new Amount("GBP", new BigDecimal("1971")); // 29p saved
     private final List<Transaction> mockTransactionList = new ArrayList<>();
 
-    @Mock RoundUpService roundUpService;
-    @Mock private TransactionService transactionService;
-    @Mock private RoundUp roundUp;
-    @Mock SavingGoalService savingGoalService;
-
-    @BeforeEach
-    void setUp() {
-        when(roundUpService.getAccountUid()).thenReturn(ACCOUNT_ID);
-        when(transactionService.getTransactions(ACCOUNT_ID)).thenReturn(mockTransactionList);
-        when(roundUp.roundUpTransactionAmount(Collections.emptyList())).thenReturn(new BigDecimal(0));
-        when(savingGoalService.getSavingGoalsList(ACCOUNT_ID)).thenReturn(Collections.emptyList());
-        when(savingGoalService.createNewSavingsGoal(ACCOUNT_ID)).thenReturn(SAVINGS_GOAL_ID);
-        when(roundUpService.roundUp()).thenReturn(Collections.emptyList());
-    }
+    @Mock private RoundUpService roundUpServiceMock;
+    @Mock private TransactionService transactionServiceMock;
+    @Mock private RoundUpHelper roundUpHelperMock;
+    @Mock private SavingGoalService savingGoalServiceMock;
 
     @Test
-    void shouldThrowErrorWhenAccountIdCallingAccountEndpointFails()
+    void shouldThrowErrorWhenCallingAccountsEndpointFails()
     {
-        when(roundUpService.roundUp()).thenCallRealMethod();
+        when(roundUpServiceMock.roundUpTransactions()).thenCallRealMethod();
         assertThrows(Exception.class, () -> {
-            roundUpService.roundUp();
+            roundUpServiceMock.roundUpTransactions();
         });
     }
 
     @Test
     void shouldReturnAccountIdWhenCallingAccountsEndpoint()
     {
-        assertEquals(ACCOUNT_ID, roundUpService.getAccountUid());
+        when(roundUpServiceMock.getAccountUid()).thenReturn(ACCOUNT_ID);
+        assertEquals(ACCOUNT_ID, roundUpServiceMock.getAccountUid());
     }
 
     @Test
     void shouldReturnListOfEmptyTransactionsWhenThereAreNoTransactions()
     {
-        assertEquals(Collections.emptyList(), transactionService.getTransactions(ACCOUNT_ID));
+        when(transactionServiceMock.getTransactions(ACCOUNT_ID)).thenReturn(mockTransactionList);
+        assertEquals(Collections.emptyList(), transactionServiceMock.getTransactions(ACCOUNT_ID));
     }
 
     @Test
     void shouldReturnListOfTransactionsWhenThereAreTransactionsPresent()
     {
+        when(transactionServiceMock.getTransactions(ACCOUNT_ID)).thenReturn(mockTransactionList);
         mockTransactionList.add(new Transaction(null, testAmount, null, null));
 
         List<Transaction> expected = new ArrayList<>();
         expected.add(new Transaction(null, testAmount, null, null));
 
-        assertEquals(expected, transactionService.getTransactions(ACCOUNT_ID));
+        assertEquals(expected, transactionServiceMock.getTransactions(ACCOUNT_ID));
     }
 
     @Test
     void shouldReturnZeroRoundUpAmountWhenTransactionListIsEmpty()
     {
-        assertEquals(new BigDecimal(0), roundUp.roundUpTransactionAmount(new ArrayList<>()));
+        when(roundUpHelperMock.roundUpTransactionAmount(Collections.emptyList())).thenReturn(new BigDecimal(0));
+        assertEquals(new BigDecimal(0), roundUpHelperMock.roundUpTransactionAmount(new ArrayList<>()));
     }
 
     @Test
     void shouldReturnRoundUpAmountWhenTransactionListIsNotEmpty()
     {
-        when(roundUp.roundUpTransactionAmount(mockTransactionList)).thenCallRealMethod();
+        when(roundUpHelperMock.roundUpTransactionAmount(mockTransactionList)).thenCallRealMethod();
 
         mockTransactionList.add(new Transaction(null, testAmount, "OUT", null));
         mockTransactionList.add(new Transaction(null, testAmount2, "OUT", null));
@@ -97,19 +90,21 @@ class RoundUpControllerTest
 
         BigDecimal expected = new BigDecimal(1.77).setScale(2, RoundingMode.DOWN);
 
-        assertEquals(expected, roundUp.roundUpTransactionAmount(mockTransactionList));
+        assertEquals(expected, roundUpHelperMock.roundUpTransactionAmount(mockTransactionList));
     }
 
     @Test
     void shouldReturnEmptyListWhenThereAreNoSavingsGoals()
     {
-        assertEquals(Collections.emptyList(), savingGoalService.getSavingGoalsList(ACCOUNT_ID));
+        when(savingGoalServiceMock.getSavingGoalsList(ACCOUNT_ID)).thenReturn(Collections.emptyList());
+        assertEquals(Collections.emptyList(), savingGoalServiceMock.getSavingGoalsList(ACCOUNT_ID));
     }
 
     @Test
     void shouldCreateNewSavingsGoalWhenThereAreNoSavingsGoals()
     {
-        assertEquals(SAVINGS_GOAL_ID, savingGoalService.createNewSavingsGoal(ACCOUNT_ID));
+        when(savingGoalServiceMock.createNewSavingsGoal(ACCOUNT_ID)).thenReturn(SAVINGS_GOAL_ID);
+        assertEquals(SAVINGS_GOAL_ID, savingGoalServiceMock.createNewSavingsGoal(ACCOUNT_ID));
     }
 
     @Test
@@ -118,15 +113,16 @@ class RoundUpControllerTest
         List<SavingGoal> savingGoalListToReturn = new ArrayList<>();
         savingGoalListToReturn.add(new SavingGoal());
 
-        when(savingGoalService.getSavingGoalsList(ACCOUNT_ID)).thenReturn(savingGoalListToReturn);
+        when(savingGoalServiceMock.getSavingGoalsList(ACCOUNT_ID)).thenReturn(savingGoalListToReturn);
 
-        assertEquals(1, savingGoalService.getSavingGoalsList(ACCOUNT_ID).size());
+        assertEquals(1, savingGoalServiceMock.getSavingGoalsList(ACCOUNT_ID).size());
     }
 
     @Test
     void shouldReturnSavingsGoalListFromRoundUpServiceRoundUp()
     {
-        assertEquals(Collections.emptyList(), roundUpService.roundUp());
+        when(roundUpServiceMock.roundUpTransactions()).thenReturn(Collections.emptyList());
+        assertEquals(Collections.emptyList(), roundUpServiceMock.roundUpTransactions());
     }
 
 }

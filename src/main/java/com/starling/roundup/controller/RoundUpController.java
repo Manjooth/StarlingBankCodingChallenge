@@ -20,7 +20,7 @@ public class RoundUpController
     @GetMapping(value = "/round-up")
     public ResponseEntity roundUp()
     {
-        final List<SavingGoal> response = roundUpService.roundUp();
+        final List<SavingGoal> response = roundUpService.roundUpTransactions();
         return ResponseEntity.ok(response);
     }
 

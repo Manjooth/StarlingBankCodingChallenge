@@ -4,7 +4,7 @@ import com.starling.roundup.components.SavingGoal;
 import com.starling.roundup.components.Transaction;
 import com.starling.roundup.config.HeadersConfiguration;
 import com.starling.roundup.util.APIUrls;
-import com.starling.roundup.util.RoundUp;
+import com.starling.roundup.util.RoundUpHelper;
 import com.starling.roundup.wrappers.AccountWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -23,19 +23,20 @@ public class RoundUpService
 {
 
     @Autowired private TransactionService transactionService;
-    @Autowired private RoundUp roundUp;
+    @Autowired private RoundUpHelper roundUpHelper;
     @Autowired private SavingGoalService savingGoalService;
+
     @Autowired private RestTemplate restTemplate;
     @Autowired private HeadersConfiguration headersConfiguration;
 
 
-    public List<SavingGoal> roundUp()
+    public List<SavingGoal> roundUpTransactions()
     {
         try{
             String savingsGoalUID = "";
             final String accountId = this.getAccountUid();
             final List<Transaction> transactionsList = this.transactionService.getTransactions(accountId);
-            final BigDecimal roundedAmount = this.roundUp.roundUpTransactionAmount(transactionsList);
+            final BigDecimal roundedAmount = this.roundUpHelper.roundUpTransactionAmount(transactionsList);
             final List<SavingGoal> savingGoalsList = this.savingGoalService.getSavingGoalsList(accountId);
 
             if(savingGoalsList.isEmpty())
@@ -48,6 +49,7 @@ public class RoundUpService
             this.savingGoalService.updateSavingsGoal(accountId, savingsGoalUID, roundedAmount);
 
             return this.savingGoalService.getSavingGoalsList(accountId);
+
         }catch(Exception exception){
             throw new RuntimeException("Error with fetching data");
         }
