@@ -29,22 +29,9 @@ public class TransactionService
     {
         final Map<String, String> params = new HashMap<>();
 
-        final Date currentDate = new Date();
-
-        final LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().minusDays(7);
-        final Date currentMinusSevenDays = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
-        final Timestamp currentDateTimeStamp =new Timestamp(currentDate.getTime());
-        final Timestamp weekAgoTimeStamp =new Timestamp(currentMinusSevenDays.getTime());
-
-        final SimpleDateFormat today = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-
-        final String todayDate = today.format(currentDateTimeStamp);
-        final String weekAgoDate = today.format(weekAgoTimeStamp);
-
         params.put("accountUid", accountId);
-        params.put("minTransactionTimestamp", weekAgoDate);
-        params.put("maxTransactionTimestamp", todayDate);
+        params.put("minTransactionTimestamp", getDate(true));
+        params.put("maxTransactionTimestamp", getDate(false));
 
         final HttpEntity<TransactionsWrapper> request = this.getHeaders();
 
@@ -59,6 +46,23 @@ public class TransactionService
         }
 
         return response.getBody().getTransactions();
+    }
+
+    public String getDate(final boolean isWeekAgoDate){
+        final SimpleDateFormat today = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        final Date currentDate = new Date();
+        Timestamp timestamp;
+
+        if(!isWeekAgoDate){
+            timestamp =new Timestamp(currentDate.getTime());
+        }else{
+            final LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().minusDays(7);
+            final Date currentMinusSevenDays = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            timestamp =new Timestamp(currentMinusSevenDays.getTime());
+        }
+
+
+        return today.format(timestamp);
     }
 
     private HttpEntity<TransactionsWrapper> getHeaders()
