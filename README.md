@@ -1,3 +1,5 @@
+<img src="https://img.shields.io/badge/made%20by-ManjoothKler-blue.svg" > 
+
 ### Running
 - In Starling Bank Developers Account, refresh or generate a new access token. Please replace
 `bearer.token` property in `application.properties`
