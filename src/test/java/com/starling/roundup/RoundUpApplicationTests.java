@@ -3,6 +3,7 @@ package com.starling.roundup;
 import com.starling.roundup.components.Amount;
 import com.starling.roundup.components.SavingGoal;
 import com.starling.roundup.components.Transaction;
+import com.starling.roundup.exceptions.StarlingException;
 import com.starling.roundup.services.RoundUpService;
 import com.starling.roundup.services.SavingGoalService;
 import com.starling.roundup.services.TransactionService;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class RoundUpApplicationTests {
+class RoundUpApplicationTests { // app needs to be running for these to work
 
 	private final String ACCOUNT_ID = "ad2e539f-cb1a-4155-8064-1a758a98a8c8";
 	private final String SAVINGS_GOAL_ID = "abcde-fghij";
@@ -31,8 +32,7 @@ class RoundUpApplicationTests {
 	private final Amount testAmount3 = new Amount("GBP", new BigDecimal("1971")); // 29p saved
 	private final List<Transaction> mockTransactionList = new ArrayList<>();
 
-	@Mock
-	private RoundUpService roundUpServiceMock;
+	@Mock private RoundUpService roundUpServiceMock;
 	@Mock private TransactionService transactionServiceMock;
 	@Mock private RoundUpHelper roundUpHelperMock;
 	@Mock private SavingGoalService savingGoalServiceMock;
@@ -54,15 +54,13 @@ class RoundUpApplicationTests {
 	}
 
 	@Test
-	void shouldReturnListOfEmptyTransactionsWhenThereAreNoTransactions()
-	{
+	void shouldReturnListOfEmptyTransactionsWhenThereAreNoTransactions() throws StarlingException {
 		when(transactionServiceMock.getTransactions(ACCOUNT_ID)).thenReturn(mockTransactionList);
 		assertEquals(Collections.emptyList(), transactionServiceMock.getTransactions(ACCOUNT_ID));
 	}
 
 	@Test
-	void shouldReturnListOfTransactionsWhenThereAreTransactionsPresent()
-	{
+	void shouldReturnListOfTransactionsWhenThereAreTransactionsPresent() throws StarlingException {
 		when(transactionServiceMock.getTransactions(ACCOUNT_ID)).thenReturn(mockTransactionList);
 		mockTransactionList.add(new Transaction(null, testAmount, null, null));
 
@@ -95,22 +93,19 @@ class RoundUpApplicationTests {
 	}
 
 	@Test
-	void shouldReturnEmptyListWhenThereAreNoSavingsGoals()
-	{
+	void shouldReturnEmptyListWhenThereAreNoSavingsGoals() throws StarlingException {
 		when(savingGoalServiceMock.getSavingGoalsList(ACCOUNT_ID)).thenReturn(Collections.emptyList());
 		assertEquals(Collections.emptyList(), savingGoalServiceMock.getSavingGoalsList(ACCOUNT_ID));
 	}
 
 	@Test
-	void shouldCreateNewSavingsGoalWhenThereAreNoSavingsGoals()
-	{
+	void shouldCreateNewSavingsGoalWhenThereAreNoSavingsGoals() throws StarlingException {
 		when(savingGoalServiceMock.createNewSavingsGoal(ACCOUNT_ID)).thenReturn(SAVINGS_GOAL_ID);
 		assertEquals(SAVINGS_GOAL_ID, savingGoalServiceMock.createNewSavingsGoal(ACCOUNT_ID));
 	}
 
 	@Test
-	void shouldReturnListWhenThereIsASavingGoal()
-	{
+	void shouldReturnListWhenThereIsASavingGoal() throws StarlingException {
 		List<SavingGoal> savingGoalListToReturn = new ArrayList<>();
 		savingGoalListToReturn.add(new SavingGoal());
 

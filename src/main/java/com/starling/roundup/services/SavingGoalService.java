@@ -5,6 +5,7 @@ import com.starling.roundup.components.CreateSavingGoal;
 import com.starling.roundup.components.CreateSavingsGoalRequest;
 import com.starling.roundup.components.SavingGoal;
 import com.starling.roundup.config.HeadersConfiguration;
+import com.starling.roundup.exceptions.StarlingException;
 import com.starling.roundup.util.APIUrls;
 import com.starling.roundup.wrappers.AmountWrapper;
 import com.starling.roundup.wrappers.SavingGoalWrapper;
@@ -26,7 +27,7 @@ public class SavingGoalService
     @Autowired private RestTemplate restTemplate;
     @Autowired private HeadersConfiguration headersConfiguration;
 
-    public List<SavingGoal> getSavingGoalsList(final String accountId)
+    public List<SavingGoal> getSavingGoalsList(final String accountId) throws StarlingException
     {
         final HttpEntity<SavingGoalWrapper> request = this.getHeaders();
         final Map<String, String> params = new HashMap<>();
@@ -45,7 +46,7 @@ public class SavingGoalService
         return response.getBody().getSavingsGoalList();
     }
 
-    public String createNewSavingsGoal(final String accountId)
+    public String createNewSavingsGoal(final String accountId) throws StarlingException
     {
         final HttpEntity<CreateSavingsGoalRequest> request = this.putHeaders();
 
@@ -60,7 +61,7 @@ public class SavingGoalService
         return response.getBody().getSavingsGoalUid();
     }
 
-    public void updateSavingsGoal(final String accountId, final String savingsGoalUID, final BigDecimal roundedAmount)
+    public void updateSavingsGoal(final String accountId, final String savingsGoalUID, final BigDecimal roundedAmount) throws StarlingException
     {
         final Map<String, String> params = new HashMap<>();
         final String transferUID = UUID.randomUUID().toString();

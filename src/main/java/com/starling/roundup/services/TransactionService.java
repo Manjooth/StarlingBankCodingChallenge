@@ -1,5 +1,6 @@
 package com.starling.roundup.services;
 
+import com.starling.roundup.exceptions.StarlingException;
 import com.starling.roundup.wrappers.TransactionsWrapper;
 import com.starling.roundup.components.Transaction;
 import com.starling.roundup.config.HeadersConfiguration;
@@ -25,7 +26,7 @@ public class TransactionService
     @Autowired private RestTemplate restTemplate;
     @Autowired private HeadersConfiguration headersConfiguration;
 
-    public List<Transaction> getTransactions(final String accountId)
+    public List<Transaction> getTransactions(final String accountId) throws StarlingException
     {
         final Map<String, String> params = new HashMap<>();
 
@@ -48,19 +49,22 @@ public class TransactionService
         return response.getBody().getTransactions();
     }
 
-    public String getDate(final boolean isWeekAgoDate){
+    public String getDate(final boolean isWeekAgoDate)
+    {
         final SimpleDateFormat today = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         final Date currentDate = new Date();
         Timestamp timestamp;
 
-        if(!isWeekAgoDate){
+        if(!isWeekAgoDate)
+        {
             timestamp =new Timestamp(currentDate.getTime());
-        }else{
+        }
+        else
+        {
             final LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().minusDays(7);
             final Date currentMinusSevenDays = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
             timestamp =new Timestamp(currentMinusSevenDays.getTime());
         }
-
 
         return today.format(timestamp);
     }
